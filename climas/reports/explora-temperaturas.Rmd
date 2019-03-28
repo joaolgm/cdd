@@ -1,0 +1,153 @@
+---
+title: "Temperatura JP x CG"
+output:
+    html_document:
+    df_print: paged
+theme: sandstone
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(here)
+library(lubridate)
+library(ggbeeswarm)
+theme_set(theme_bw())
+```
+
+```{r read}
+climas = read_csv(here::here("data/clima_cg_jp-semanal.csv"), 
+                  col_types = "cTdddddd")
+
+glimpse(climas)
+```
+
+## Temperatura
+```{r}
+cg_clima = climas %>%
+    filter(cidade == "Campina Grande")
+
+#glimpse(cg_clima)
+
+jp_clima = climas %>%
+    filter(cidade == "João Pessoa")
+
+#glimpse(jp_clima)
+
+```
+
+### Onde é mais quente?
+```{r}
+
+cg_clima %>% 
+    ggplot(aes(x = ano, y = tmax)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+jp_clima %>%
+    ggplot(aes(x = ano, y = tmax)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "brown")
+
+```
+Em João Pessoa é mais comum a temperatura máxima ser maior que 30 graus do que em Campina Grande.
+
+### As temperaturas máximas semanais (o pico do calor) são tão diferentes quanto as médias? Mais? 
+```{r}
+cg_clima %>%
+    ggplot(aes(x = ano, y = tmedia)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+jp_clima %>%
+    ggplot(aes(x = ano, y = tmedia)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "brown")
+
+```
+
+### Quais os meses mais quentes e mais frios? 
+```{r}
+cg_clima %>%
+    ggplot(aes(x = mes, y = tmedia)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+jp_clima %>%
+    ggplot(aes(x = mes, y = tmedia)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "brown")
+    
+```
+Ambas cidades tem como mês mais frio Julho e mais quente Março.
+
+### Qual foi o São João  mais frio de CG que está nos nossos dados?
+```{r}
+mes_junho = cg_clima %>%
+    filter(mes == 6)
+
+mes_junho %>%
+    ggplot(aes(x = ano, y = tmedia)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+```
+São João de 2008 teve a menor temperatura média registrada.
+
+## Chuva
+
+### Quanto chove por semana em JP e CG?
+```{r}
+cg_clima %>%
+    ggplot(aes(x = semana, y = chuva)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+jp_clima %>%
+    ggplot(aes(x = semana, y = chuva)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "brown")
+
+```
+
+Como é a distribuição do volume de chuvas por semana em JP e CG? A chuva varia mais ou menos que a temperatura? O formato da distribuição é igual? 
+
+### No geral, onde chove mais?
+```{r}
+cg_clima %>%
+    ggplot(aes(x = ano, y = chuva)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+jp_clima %>%
+    ggplot(aes(x = ano, y = chuva)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "brown")
+
+```
+
+### A distribuição é diferente em meses específicos? 
+```{r}
+cg_clima %>%
+    ggplot(aes(x = mes, y = chuva)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "blue")
+
+jp_clima %>%
+    ggplot(aes(x = mes, y = chuva)) +
+    geom_point(alpha = .3,
+               size = 1.3,
+               color = "brown")
+
+```
